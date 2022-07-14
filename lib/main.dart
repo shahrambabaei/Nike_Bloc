@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nike/configs/theme.dart';
+import 'package:nike/data/product.dart';
+import 'package:nike/data/repo/product_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,6 +12,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    productRepository.getAll(ProductSort.latest).then((value) {
+      debugPrint(value.toString());
+    }).catchError((e) {
+      debugPrint(e.toString());
+    });
     const defaultTextStyle = TextStyle(
         fontFamily: 'Shabnam', color: LightThemeColors.primaryTextColor);
     return MaterialApp(
@@ -17,7 +24,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
             textTheme: TextTheme(
-                bodyText2: defaultTextStyle, 
+                bodyText2: defaultTextStyle,
                 caption: defaultTextStyle.apply(
                     color: LightThemeColors.secondaryTextColor),
                 headline6:
