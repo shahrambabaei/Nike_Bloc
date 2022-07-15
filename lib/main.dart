@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nike/configs/theme.dart';
-import 'package:nike/data/product.dart';
+import 'package:nike/data/models/product.dart';
+import 'package:nike/data/repo/banner_repository.dart';
 import 'package:nike/data/repo/product_repository.dart';
 
 void main() {
@@ -13,6 +14,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     productRepository.getAll(ProductSort.latest).then((value) {
+      debugPrint(value.toString());
+    }).catchError((e) {
+      debugPrint(e.toString());
+    });
+
+    bannerRepository.getAll().then((value) {
       debugPrint(value.toString());
     }).catchError((e) {
       debugPrint(e.toString());
