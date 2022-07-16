@@ -16,17 +16,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    productRepository.getAll(ProductSort.latest).then((value) {
-      debugPrint(value.toString());
-    }).catchError((e) {
-      debugPrint(e.toString());
-    });
+    // productRepository.getAll(ProductSort.latest).then((value) {
+    //   debugPrint(value.toString());
+    // }).catchError((e) {
+    //   debugPrint(e.toString());
+    // });
 
-    bannerRepository.getAll().then((value) {
-      debugPrint(value.toString());
-    }).catchError((e) {
-      debugPrint(e.toString());
-    });
+    // bannerRepository.getAll().then((value) {
+    //   debugPrint(value.toString());
+    // }).catchError((e) {
+    //   debugPrint(e.toString());
+    // });
     const defaultTextStyle = TextStyle(
         fontFamily: 'Shabnam', color: LightThemeColors.primaryTextColor);
     return MaterialApp(
