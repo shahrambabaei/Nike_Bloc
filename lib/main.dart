@@ -35,6 +35,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             textTheme: TextTheme(
                 bodyText2: defaultTextStyle,
+                button: defaultTextStyle,
+                subtitle1: defaultTextStyle.apply(
+                    color: LightThemeColors.secondaryTextColor),
                 caption: defaultTextStyle.apply(
                     color: LightThemeColors.secondaryTextColor),
                 headline6:
