@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/configs/theme.dart';
 import 'package:nike/ui/home/bloc/home_bloc.dart';
+import 'package:nike/utils/engine.dart';
 import 'package:nike/widgets/bannerslider.dart';
 import 'package:nike/widgets/homescreen.dart/horisontalproductlist.dart';
 import 'package:nike/widgets/imageloadingservice.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
           child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         if (state is HomeSuccess) {
           return ListView.builder(
+            physics:defaultScrollPhysics ,
               itemCount: 5,
               itemBuilder: (context, index) {
                 switch (index) {
