@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nike/configs/theme.dart';
 import 'package:nike/data/models/product.dart';
+import 'package:nike/ui/product/comment/comment_list.dart';
 import 'package:nike/utils/engine.dart';
 import 'package:nike/widgets/imageloadingservice.dart';
 
@@ -14,9 +15,7 @@ class DetailScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: CustomScrollView(
-          physics: defaultScrollPhysics, 
-        slivers: [
+        body: CustomScrollView(physics: defaultScrollPhysics, slivers: [
           SliverAppBar(
             expandedHeight: MediaQuery.of(context).size.width * .7,
             flexibleSpace: ImageLoadingService(imageUrl: product.imageUrl),
@@ -51,7 +50,9 @@ class DetailScreen extends StatelessWidget {
                   height: 24,
                 ),
                 const Text(
-                    'این کتونی شدیدا برای دویدن و راه رفتن مناسب هست و تقریبا. هیچ فشار مخربی رو نمیذارد به پا و زانوان شما انتقال داده شود'),
+                  'این کتونی شدیدا برای دویدن و راه رفتن مناسب هست و تقریبا. هیچ فشار مخربی رو نمیذارد به پا و زانوان شما انتقال داده شود',
+                  style: TextStyle(height: 1.4),
+                ),
                 const SizedBox(
                   height: 24,
                 ),
@@ -62,23 +63,19 @@ class DetailScreen extends StatelessWidget {
                       'نظرات کاربران',
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    TextButton(onPressed: () {}, child: Text(' ثبت نظر'))
+                    TextButton(onPressed: () {}, child: const Text(' ثبت نظر'))
                   ],
                 ),
-                Container(
-                  color: Colors.blue,
-                  height: 1000,
-                  width: 300,
-                )
               ]),
             ),
-          )
+          ),
+          CommentList(productId: product.id)
         ]),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: SizedBox(
           width: MediaQuery.of(context).size.width * .8,
           child: FloatingActionButton.extended(
-              onPressed: () {}, label: Text('افزودن به سبد خرید')),
+              onPressed: () {}, label: const Text('افزودن به سبد خرید')),
         ),
       ),
     );

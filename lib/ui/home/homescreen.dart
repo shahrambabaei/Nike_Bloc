@@ -1,12 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nike/configs/theme.dart';
 import 'package:nike/ui/home/bloc/home_bloc.dart';
 import 'package:nike/utils/engine.dart';
+import 'package:nike/widgets/apperrorwidget.dart';
 import 'package:nike/widgets/bannerslider.dart';
 import 'package:nike/widgets/homescreen.dart/horisontalproductlist.dart';
-import 'package:nike/widgets/imageloadingservice.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +16,7 @@ class HomeScreen extends StatelessWidget {
           child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
         if (state is HomeSuccess) {
           return ListView.builder(
-            physics:defaultScrollPhysics ,
+              physics: defaultScrollPhysics,
               itemCount: 5,
               itemBuilder: (context, index) {
                 switch (index) {
@@ -51,17 +49,11 @@ class HomeScreen extends StatelessWidget {
         } else if (state is HomeLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is HomeError) {
-          return Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(state.exceptions.messege),
-              ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
-                  },
-                  child: Text('تلاش دوباره'))
-            ]),
-          );
+          return AppErrorwidget(
+              exception: state.exception,
+              onClick: () {
+                BlocProvider.of<HomeBloc>(context).add(HomeRefresh());
+              });
         } else {
           throw Exception('state is not supported');
         }

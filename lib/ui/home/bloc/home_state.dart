@@ -10,10 +10,10 @@ abstract class HomeState extends Equatable {
 class HomeLoading extends HomeState {}
 
 class HomeError extends HomeState {
-  final AppException exceptions;
-  const HomeError({required this.exceptions});
+  final AppException exception;
+  const HomeError({required this.exception});
   @override
-  List<Object> get props => [exceptions];
+  List<Object> get props => [exception];
 }
 
 class HomeSuccess extends HomeState {

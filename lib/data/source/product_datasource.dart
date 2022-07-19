@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:nike/configs/exceptions.dart';
 import 'package:nike/configs/http_respose_validatore.dart';
 import 'package:nike/data/models/product.dart';
 
@@ -29,7 +28,7 @@ class ProductRemoteDataSource
   Future<List<ProductEntity>> search(String searchTerm) async {
     final response = await httpClient.get('product/search?q=$searchTerm');
     validateResponse(response);
-    final products = <ProductEntity>[];
+    final List<ProductEntity> products = [];
     (response.data as List).forEach((item) {
       products.add(ProductEntity.fromJson(item));
     });
