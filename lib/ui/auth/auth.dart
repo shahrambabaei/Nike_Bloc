@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:nike/configs/theme.dart';
+import 'package:nike/data/repo/auth_repository.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -19,10 +20,10 @@ class _AuthScreenState extends State<AuthScreen> {
             colorScheme:
                 Theme.of(context).colorScheme.copyWith(onSurface: onBackground),
             inputDecorationTheme: InputDecorationTheme(
-              labelStyle:  TextStyle(color: onBackground.withOpacity(.7)),
+              labelStyle: TextStyle(color: onBackground.withOpacity(.7)),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: onBackground,width: 1)),
+                  borderSide: const BorderSide(color: onBackground, width: 1)),
             ),
             elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ButtonStyle(
@@ -57,7 +58,8 @@ class _AuthScreenState extends State<AuthScreen> {
                   isLogin
                       ? 'لطفا وارد حساب کاربری خود شوید'
                       : '  ایمیل و روز عبور خور را وارد کنید',
-                  style:  TextStyle(fontSize: 16, color: onBackground.withOpacity(.7)),
+                  style: TextStyle(
+                      fontSize: 16, color: onBackground.withOpacity(.7)),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 30, bottom: 10),
@@ -70,7 +72,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async{
+                        //  await authRepository.login('test@gmail.com', '123456');
+                          authRepository.refreshToken();
+                        },
                         child: Text(isLogin ? 'ثبت نام' : 'ورود'))),
                 GestureDetector(
                   onTap: () {
@@ -124,7 +129,7 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
       decoration: InputDecoration(
           label: const Text('رمز عبور'),
           suffixIcon: IconButton(
-            splashRadius:20 ,
+              splashRadius: 20,
               onPressed: () {
                 setState(() {
                   _obscureText = !_obscureText;
