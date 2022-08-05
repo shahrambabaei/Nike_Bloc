@@ -12,6 +12,10 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
+  final TextEditingController usernameController =
+      TextEditingController(text: 'test@gmail.com');
+  final TextEditingController passwordController =
+      TextEditingController(text: '123456');
   @override
   Widget build(BuildContext context) {
     const onBackground = LightThemeColors.onBackgroundColor;
@@ -63,18 +67,20 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 30, bottom: 10),
-                  child: const TextField(
+                  child: TextField(
+                    controller: usernameController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(label: Text('ایمیل')),
+                    decoration: const InputDecoration(label: Text('ایمیل')),
                   ),
                 ),
-                const _PasswordTextField(onBackground: onBackground),
+                _PasswordTextField(
+                    controller: passwordController, onBackground: onBackground),
                 Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ElevatedButton(
-                        onPressed: () async{
-                        //  await authRepository.login('test@gmail.com', '123456');
-                          authRepository.refreshToken();
+                        onPressed: () async {
+                          authRepository.login(
+                              usernameController.text, passwordController.text);
                         },
                         child: Text(isLogin ? 'ثبت نام' : 'ورود'))),
                 GestureDetector(
@@ -111,9 +117,11 @@ class _PasswordTextField extends StatefulWidget {
   const _PasswordTextField({
     Key? key,
     required this.onBackground,
+    required this.controller,
   }) : super(key: key);
 
   final Color onBackground;
+  final TextEditingController controller;
 
   @override
   State<_PasswordTextField> createState() => _PasswordTextFieldState();
@@ -125,6 +133,7 @@ class _PasswordTextFieldState extends State<_PasswordTextField> {
   Widget build(BuildContext context) {
     return TextField(
       obscureText: _obscureText,
+      controller: widget.controller,
       keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(
           label: const Text('رمز عبور'),

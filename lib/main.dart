@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/configs/theme.dart';
+import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/data/repo/banner_repository.dart';
 import 'package:nike/data/repo/product_repository.dart';
 import 'package:nike/ui/auth/auth.dart';
 
 import 'package:nike/ui/home/bloc/home_bloc.dart';
-import 'package:nike/ui/home/homescreen.dart';
-import 'package:nike/ui/root.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  authRepository.loadAuthInfo();
   runApp(const MyApp());
 }
 
