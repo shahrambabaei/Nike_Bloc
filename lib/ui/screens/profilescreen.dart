@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nike/ui/screens/cart.dart';
+import 'package:nike/ui/cart/cart.dart';
+
 
 class ProfileSceen extends StatelessWidget {
   const ProfileSceen({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nike/ui/cart/cart.dart';
 import 'package:nike/ui/home/homescreen.dart';
-import 'package:nike/ui/screens/cart.dart';
 import 'package:nike/ui/screens/profilescreen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -71,7 +71,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ));
   }
-
 
 //_navigator
   Widget _navigator({required GlobalKey key, required Widget screen}) {
