@@ -1,6 +1,7 @@
 import 'package:nike/configs/http_client.dart';
 import 'package:nike/data/models/cart.dart';
 import 'package:nike/data/models/cart_item.dart';
+import 'package:nike/data/models/cart_response.dart';
 import 'package:nike/data/source/cart_datasource.dart';
 
 final CartRepository cartRepository =
@@ -11,7 +12,7 @@ abstract class ICartRepository {
   Future<Cart> changeCount(int cartItemId, int count);
   Future<void> delete(int cartItemId);
   Future<int> count();
-  Future<List<CartItemEntity>> getAll();
+  Future<CartResponse> getAll();
 }
 
 class CartRepository implements ICartRepository {
@@ -40,8 +41,5 @@ class CartRepository implements ICartRepository {
   }
 
   @override
-  Future<List<CartItemEntity>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
-  }
+  Future<CartResponse> getAll() => dataSource.getAll();
 }
