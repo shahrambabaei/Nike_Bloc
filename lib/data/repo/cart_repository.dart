@@ -1,6 +1,5 @@
 import 'package:nike/configs/http_client.dart';
 import 'package:nike/data/models/cart.dart';
-import 'package:nike/data/models/cart_item.dart';
 import 'package:nike/data/models/cart_response.dart';
 import 'package:nike/data/source/cart_datasource.dart';
 
