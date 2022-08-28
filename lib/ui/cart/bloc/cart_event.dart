@@ -14,3 +14,9 @@ class CartStarted extends CartEvent {
 }
 
 class CartDeleteButton extends CartEvent {}
+
+class CartAuthInfoChanged extends CartEvent {
+  final AuthInfo? authInfo;
+
+  const CartAuthInfoChanged(this.authInfo);
+}

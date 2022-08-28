@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nike/ui/cart/cart.dart';
+import 'package:nike/data/repo/auth_repository.dart';
+
 
 
 class ProfileSceen extends StatelessWidget {
@@ -16,16 +16,12 @@ class ProfileSceen extends StatelessWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(CupertinoIcons.person),
+          const Text('Profile'),
           ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CartScreen(),
-                    ));
+                authRepository.signOut();
               },
-              child: const Text('next'))
+              child: const Text('Sign Out'))
         ],
       )),
     );
