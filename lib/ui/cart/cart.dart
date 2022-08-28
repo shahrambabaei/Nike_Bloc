@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/configs/theme.dart';
-import 'package:nike/data/models/authinfo.dart';
 import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/data/repo/cart_repository.dart';
 import 'package:nike/ui/auth/auth.dart';
@@ -32,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         body: BlocProvider<CartBloc>(create: (context) {
           final bloc = CartBloc(cartRepository);
-          bloc.add(CartStarted());
+          bloc.add(CartStarted(AuthRepository.authChangeNotifier.value));
           return bloc;
         }, child: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
@@ -46,13 +45,14 @@ class _CartScreenState extends State<CartScreen> {
               );
             } else if (state is CartSuccess) {
               return ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: state.cartResponse.cartItems.length,
                 itemBuilder: (context, index) {
                   final data = state.cartResponse.cartItems[index];
                   return Container(
-                    margin: const EdgeInsets.all(4),
+                    margin: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         color: LightThemeColors.surfacedColor,
                         boxShadow: [
                           BoxShadow(
@@ -130,6 +130,22 @@ class _CartScreenState extends State<CartScreen> {
                     ]),
                   );
                 },
+              );
+            } else if (state is CartAuthRequired) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('وارد حساب کارربری خود شوید'),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const AuthScreen(),
+                          ));
+                        },
+                        child: const Text('ورورد'))
+                  ],
+                ),
               );
             } else {
               throw Exception('Current cart state is not valid');
