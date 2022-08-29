@@ -25,22 +25,29 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-            snackBarTheme: SnackBarThemeData(
-                // backgroundColor: LightThemeColors.primaryColor,
-                contentTextStyle: defaultTextStyle.apply(color: Colors.white)),
-            textTheme: TextTheme(
-                bodyText2: defaultTextStyle,
-                button: defaultTextStyle,
-                subtitle1: defaultTextStyle.apply(
-                    color: LightThemeColors.secondaryTextColor),
-                caption: defaultTextStyle.apply(
-                    color: LightThemeColors.secondaryTextColor),
-                headline6: defaultTextStyle.copyWith(
-                    fontWeight: FontWeight.bold, fontSize: 18)),
-            colorScheme: const ColorScheme.light(
-                primary: LightThemeColors.primaryColor,
-                secondary: LightThemeColors.secondaryColor,
-                onSecondary: Colors.white)),
+          snackBarTheme: SnackBarThemeData(
+            // backgroundColor: LightThemeColors.primaryColor,
+            contentTextStyle: defaultTextStyle.apply(color: Colors.white),
+          ),
+          appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.white,
+              foregroundColor: LightThemeColors.primaryTextColor,
+              elevation: 0),
+          textTheme: TextTheme(
+            bodyText2: defaultTextStyle,
+            button: defaultTextStyle,
+            subtitle1: defaultTextStyle.apply(
+                color: LightThemeColors.secondaryTextColor),
+            caption: defaultTextStyle.apply(
+                color: LightThemeColors.secondaryTextColor),
+            headline6: defaultTextStyle.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          colorScheme: const ColorScheme.light(
+              primary: LightThemeColors.primaryColor,
+              secondary: LightThemeColors.secondaryColor,
+              onSecondary: Colors.white),
+        ),
         home: Directionality(
             textDirection: TextDirection.rtl,
             child: BlocProvider(

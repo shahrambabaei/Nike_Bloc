@@ -34,10 +34,7 @@ class CartRepository implements ICartRepository {
   }
 
   @override
-  Future<void> delete(int cartItemId) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
+  Future<void> delete(int cartItemId) => dataSource.delete(cartItemId);
 
   @override
   Future<CartResponse> getAll() => dataSource.getAll();

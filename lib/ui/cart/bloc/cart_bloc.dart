@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:nike/configs/exceptions.dart';
 import 'package:nike/data/models/authinfo.dart';
 import 'package:nike/data/models/cart_response.dart';
@@ -19,7 +20,31 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         } else {
           await loadCartItem(emit);
         }
-      } else if (event is CartDeleteButton) {
+      } else if (event is CartDeleteButtonClick) {
+        try { 
+          if (state is CartSuccess) {
+            final successState = (state as CartSuccess);
+            final index = successState.cartResponse.cartItems
+                .indexWhere((element) => element.id == event.cartItemId);
+            successState.cartResponse.cartItems[index].deleteButtonLoading =
+                true;
+            emit(CartSuccess(successState.cartResponse));
+          }
+          
+          await cartRepository.delete(event.cartItemId);
+          if (state is CartSuccess) {
+            final successState = (state as CartSuccess);
+            successState.cartResponse.cartItems
+                .removeWhere((element) => element.id == event.cartItemId);
+            if (successState.cartResponse.cartItems.isEmpty) {
+              emit(CartEmpty());
+            } else {
+              emit(CartSuccess(successState.cartResponse));
+            }
+          }
+        } catch (e) {
+          debugPrint(e.toString());
+        }
       } else if (event is CartAuthInfoChanged) {
         final authInfo = event.authInfo;
         if (authInfo == null || authInfo.accesstoken.isEmpty) {
@@ -37,7 +62,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     try {
       emit(CartLoading());
       final result = await cartRepository.getAll();
-      emit(CartSuccess(result));
+      if (result.cartItems.isEmpty) {
+        emit(CartEmpty());
+      } else {
+        emit(CartSuccess(result));
+      }
     } catch (e) {
       emit(CartError(AppException()));
     }
