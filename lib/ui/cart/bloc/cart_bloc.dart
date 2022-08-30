@@ -18,10 +18,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         if (authInfo == null || authInfo.accesstoken.isEmpty) {
           emit(CartAuthRequired());
         } else {
-          await loadCartItem(emit);
+          await loadCartItem(emit, event.isRefreshing);
         }
       } else if (event is CartDeleteButtonClick) {
-        try { 
+        try {
           if (state is CartSuccess) {
             final successState = (state as CartSuccess);
             final index = successState.cartResponse.cartItems
@@ -30,7 +30,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                 true;
             emit(CartSuccess(successState.cartResponse));
           }
-          
+          await Future.delayed(const Duration(seconds: 2));
           await cartRepository.delete(event.cartItemId);
           if (state is CartSuccess) {
             final successState = (state as CartSuccess);
@@ -51,16 +51,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           emit(CartAuthRequired());
         } else {
           if (state is CartAuthRequired) {
-            await loadCartItem(emit);
+            await loadCartItem(emit, false);
           }
         }
       }
     });
   }
 
-  Future<void> loadCartItem(Emitter<CartState> emit) async {
+  Future<void> loadCartItem(Emitter<CartState> emit, bool isRefreshing) async {
     try {
-      emit(CartLoading());
+      if (!isRefreshing) {
+        emit(CartLoading());
+      }
       final result = await cartRepository.getAll();
       if (result.cartItems.isEmpty) {
         emit(CartEmpty());

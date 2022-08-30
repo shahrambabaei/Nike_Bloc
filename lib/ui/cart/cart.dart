@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +11,7 @@ import 'package:nike/ui/auth/auth.dart';
 import 'package:nike/ui/cart/bloc/cart_bloc.dart';
 import 'package:nike/ui/cart/cart_item.dart';
 import 'package:nike/widgets/empty_state.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -18,6 +22,8 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   late final CartBloc cartBloc;
+  final RefreshController _refreshController = RefreshController();
+  late StreamSubscription? _streamSubscription;
   @override
   void initState() {
     AuthRepository.authChangeNotifier.addListener(authChangeNotifierListener);
@@ -33,6 +39,7 @@ class _CartScreenState extends State<CartScreen> {
     AuthRepository.authChangeNotifier
         .removeListener(authChangeNotifierListener);
     cartBloc.close();
+    _streamSubscription?.cancel();
     super.dispose();
   }
 
@@ -46,6 +53,15 @@ class _CartScreenState extends State<CartScreen> {
         ),
         body: BlocProvider<CartBloc>(create: (context) {
           final bloc = CartBloc(cartRepository);
+          _streamSubscription = bloc.stream.listen((state) {
+            if (_refreshController.isRefresh) {
+              if (state is CartSuccess) {
+                _refreshController.refreshCompleted();
+              } else if (state is CartError) {
+                _refreshController.refreshFailed();
+              }
+            }
+          });
           cartBloc = bloc;
           bloc.add(CartStarted(AuthRepository.authChangeNotifier.value));
           return bloc;
@@ -60,18 +76,41 @@ class _CartScreenState extends State<CartScreen> {
                 child: Text(state.appException.messege),
               );
             } else if (state is CartSuccess) {
-              return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: state.cartResponse.cartItems.length,
-                itemBuilder: (context, index) {
-                  final data = state.cartResponse.cartItems[index];
-                  return Cartitem(
-                    data: data,
-                    onDeleteButtonClick: () {
-                      cartBloc.add(CartDeleteButtonClick(data.id));
-                    },
-                  );
+              return SmartRefresher(
+                controller: _refreshController,
+                header: const ClassicHeader(
+                  completeText: 'باموفقیت انجام شد',
+                  refreshingText: 'در حال به روزرسانی',
+                  idleText: 'برای به روزرسانی به سمت پایین بکشید',
+                  releaseText: 'رها کنید',
+                  failedText: 'خطای نامشخص',
+                  completeIcon: Icon(
+                    CupertinoIcons.checkmark_circle,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
+                
+                  spacing: 3,
+                ),
+                
+                onRefresh: () {
+                  cartBloc.add(CartStarted(
+                      AuthRepository.authChangeNotifier.value,
+                      isRefreshing: true));
                 },
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: state.cartResponse.cartItems.length,
+                  itemBuilder: (context, index) {
+                    final data = state.cartResponse.cartItems[index];
+                    return Cartitem(
+                      data: data,
+                      onDeleteButtonClick: () {
+                        cartBloc.add(CartDeleteButtonClick(data.id));
+                      },
+                    );
+                  },
+                ),
               );
             } else if (state is CartAuthRequired) {
               return EmptyView(
