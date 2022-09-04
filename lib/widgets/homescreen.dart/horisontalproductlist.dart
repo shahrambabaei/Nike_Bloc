@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nike/data/models/product.dart';
-import 'package:nike/utils/engine.dart';
+import 'package:nike/configs/utils.dart';
 import 'package:nike/widgets/productitem.dart';
 
 class HorisontalProductList extends StatelessWidget {

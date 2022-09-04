@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nike/configs/theme.dart';
+import 'package:nike/data/models/cart_response.dart';
 import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/data/repo/cart_repository.dart';
 import 'package:nike/ui/auth/auth.dart';
 import 'package:nike/ui/cart/bloc/cart_bloc.dart';
-import 'package:nike/ui/cart/cart_item.dart';
+import 'package:nike/ui/cart/widgest/cart_info.dart';
+import 'package:nike/ui/cart/widgest/cart_item.dart';
 import 'package:nike/widgets/empty_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -89,10 +91,8 @@ class _CartScreenState extends State<CartScreen> {
                     color: Colors.grey,
                     size: 20,
                   ),
-                
                   spacing: 3,
                 ),
-                
                 onRefresh: () {
                   cartBloc.add(CartStarted(
                       AuthRepository.authChangeNotifier.value,
@@ -100,15 +100,22 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: state.cartResponse.cartItems.length,
+                  itemCount: state.cartResponse.cartItems.length + 1,
                   itemBuilder: (context, index) {
-                    final data = state.cartResponse.cartItems[index];
-                    return Cartitem(
-                      data: data,
-                      onDeleteButtonClick: () {
-                        cartBloc.add(CartDeleteButtonClick(data.id));
-                      },
-                    );
+                    if (index < state.cartResponse.cartItems.length) {
+                      final data = state.cartResponse.cartItems[index];
+                      return Cartitem(
+                        data: data,
+                        onDeleteButtonClick: () {
+                          cartBloc.add(CartDeleteButtonClick(data.id));
+                        },
+                      );
+                    } else {
+                      return CartInfo(
+                          payablePrice: state.cartResponse.payablePrice,
+                          totalPrice: state.cartResponse.totalPrice,
+                          shippingPrice: state.cartResponse.shippingPrice);
+                    }
                   },
                 ),
               );

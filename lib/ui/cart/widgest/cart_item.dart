@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nike/configs/theme.dart';
 import 'package:nike/data/models/cart_item.dart';
-import 'package:nike/utils/engine.dart';
+import 'package:nike/configs/utils.dart';
 import 'package:nike/widgets/imageloadingservice.dart';
 
 class Cartitem extends StatelessWidget {

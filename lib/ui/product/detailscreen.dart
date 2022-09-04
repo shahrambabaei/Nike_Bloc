@@ -8,7 +8,7 @@ import 'package:nike/data/models/product.dart';
 import 'package:nike/data/repo/cart_repository.dart';
 import 'package:nike/ui/product/bloc/product_bloc.dart';
 import 'package:nike/ui/product/comment/comment_list.dart';
-import 'package:nike/utils/engine.dart';
+import 'package:nike/configs/utils.dart';
 import 'package:nike/widgets/imageloadingservice.dart';
 
 class DetailScreen extends StatefulWidget {

@@ -5,6 +5,7 @@ import 'package:nike/configs/exceptions.dart';
 import 'package:nike/data/models/authinfo.dart';
 import 'package:nike/data/models/cart_response.dart';
 import 'package:nike/data/repo/cart_repository.dart';
+import 'package:nike/ui/cart/widgest/cart_item.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -39,7 +40,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             if (successState.cartResponse.cartItems.isEmpty) {
               emit(CartEmpty());
             } else {
-              emit(CartSuccess(successState.cartResponse));
+              emit(calculatePriceinfo(successState.cartResponse));
             }
           }
         } catch (e) {
@@ -72,5 +73,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } catch (e) {
       emit(CartError(AppException()));
     }
+  }
+
+  CartSuccess calculatePriceinfo(CartResponse cartResponse) {
+    int payablePrice = 0;
+    int totalPrice = 0;
+    int shippingPrice = 0;
+    cartResponse.cartItems.forEach((cartItem) {
+      payablePrice += cartItem.product.price * cartItem.count;
+      totalPrice += cartItem.product.previousPrice * cartItem.count;
+    });
+    shippingPrice += payablePrice > 300000 ? 0 : 30000;
+    cartResponse.totalPrice = totalPrice;
+    cartResponse.payablePrice = payablePrice;
+    cartResponse.shippingPrice = shippingPrice;
+    return CartSuccess(cartResponse);
   }
 }

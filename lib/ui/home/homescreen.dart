@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/ui/home/bloc/home_bloc.dart';
-import 'package:nike/utils/engine.dart';
+import 'package:nike/configs/utils.dart';
 import 'package:nike/widgets/apperrorwidget.dart';
 import 'package:nike/widgets/bannerslider.dart';
 import 'package:nike/widgets/homescreen.dart/horisontalproductlist.dart';
