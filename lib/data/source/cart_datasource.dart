@@ -1,3 +1,4 @@
+import 'package:nike/configs/http_client.dart';
 import 'package:nike/data/models/cart.dart';
 import 'package:dio/dio.dart';
 import 'package:nike/data/models/cart_response.dart';
@@ -22,9 +23,10 @@ class CartRemoteDataSource implements ICartDataSource {
   }
 
   @override
-  Future<Cart> changeCount(int cartItemId, int count) {
-    // TODO: implement changeCount
-    throw UnimplementedError();
+  Future<Cart> changeCount(int cartItemId, int count) async {
+    final response = await httpClient.post('cart/changeCount',
+        data: {"cart_item_id": cartItemId, "count": count});
+    return Cart.formJson(response.data);
   }
 
   @override

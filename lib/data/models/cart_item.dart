@@ -1,12 +1,13 @@
-import 'dart:convert';
+
 
 import 'package:nike/data/models/product.dart';
 
 class CartItemEntity {
   final ProductEntity product;
   final int id;
-  final int count;
+   int count;
   bool deleteButtonLoading = false;
+  bool changeCountLoading = false;
 
   CartItemEntity(this.product, this.id, this.count);
   CartItemEntity.fromJson(Map<String, dynamic> json)

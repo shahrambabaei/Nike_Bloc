@@ -41,7 +41,7 @@ class CartInfo extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('مبلغ کل خرید'),
+                    const Text('مبلغ کل خرید'),
                     RichText(
                         text: TextSpan(
                             text: totalPrice.saparateByCpmma,
@@ -69,7 +69,7 @@ class CartInfo extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('هزینه ارسال'),
+                    const Text('هزینه ارسال'),
                     Text(shippingPrice.withPriceLable)
                   ],
                 ),
@@ -79,13 +79,13 @@ class CartInfo extends StatelessWidget {
                 height: 1,
                 thickness: .7,
               ),
-              //~
+             
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('مبلغ قابل پرداخت'),
+                    const Text('مبلغ قابل پرداخت'),
                     RichText(
                         text: TextSpan(
                             text: payablePrice.saparateByCpmma,

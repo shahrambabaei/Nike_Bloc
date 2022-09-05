@@ -104,10 +104,18 @@ class _CartScreenState extends State<CartScreen> {
                   itemBuilder: (context, index) {
                     if (index < state.cartResponse.cartItems.length) {
                       final data = state.cartResponse.cartItems[index];
-                      return Cartitem(
+                      return CartItem(
                         data: data,
                         onDeleteButtonClick: () {
                           cartBloc.add(CartDeleteButtonClick(data.id));
+                        },
+                        onDecreaseButtonClick: (() {
+                          if (data.count > 1) {
+                            cartBloc.add(CartDecreaseCountButtonCicked(data.id));
+                          }
+                        }),
+                        onIncreaseButtonClick: () {
+                          cartBloc.add(CartIncreaseCountButtonClicked(data.id));
                         },
                       );
                     } else {

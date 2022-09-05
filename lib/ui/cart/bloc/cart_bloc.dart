@@ -31,7 +31,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
                 true;
             emit(CartSuccess(successState.cartResponse));
           }
-          await Future.delayed(const Duration(seconds: 2));
+          await Future.delayed(const Duration(seconds: 1));
           await cartRepository.delete(event.cartItemId);
           if (state is CartSuccess) {
             final successState = (state as CartSuccess);
@@ -54,6 +54,39 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           if (state is CartAuthRequired) {
             await loadCartItem(emit, false);
           }
+        }
+      } else if (event is CartIncreaseCountButtonClicked ||
+          event is CartDecreaseCountButtonCicked) {
+        try {
+          int cartItemId = 0;
+          if (event is CartIncreaseCountButtonClicked) {
+            cartItemId = event.cartItemId;
+          } else if (event is CartDecreaseCountButtonCicked) {
+            cartItemId = event.cartItemId;
+          }
+          if (state is CartSuccess) {
+            final successState = (state as CartSuccess);
+            final index = successState.cartResponse.cartItems
+                .indexWhere((element) => element.id == cartItemId);
+            successState.cartResponse.cartItems[index].changeCountLoading =
+                true;
+            emit(CartSuccess(successState.cartResponse));
+
+            await Future.delayed(const Duration(seconds: 1));
+            final newCount = event is CartIncreaseCountButtonClicked
+                ? ++successState.cartResponse.cartItems[index].count
+                : --successState.cartResponse.cartItems[index].count;
+            await cartRepository.changeCount(cartItemId, newCount);
+
+            successState.cartResponse.cartItems
+                .firstWhere((element) => element.id == cartItemId)
+              ..count = newCount
+              ..changeCountLoading = false;
+
+            emit(calculatePriceinfo(successState.cartResponse));
+          }
+        } catch (e) {
+          debugPrint(e.toString());
         }
       }
     });

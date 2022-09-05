@@ -5,15 +5,19 @@ import 'package:nike/data/models/cart_item.dart';
 import 'package:nike/configs/utils.dart';
 import 'package:nike/widgets/imageloadingservice.dart';
 
-class Cartitem extends StatelessWidget {
-  const Cartitem({
+class CartItem extends StatelessWidget {
+  const CartItem({
     Key? key,
     required this.data,
     required this.onDeleteButtonClick,
+    required this.onIncreaseButtonClick,
+    required this.onDecreaseButtonClick,
   }) : super(key: key);
 
   final CartItemEntity data;
   final GestureTapCallback onDeleteButtonClick;
+  final GestureTapCallback onIncreaseButtonClick;
+  final GestureTapCallback onDecreaseButtonClick;
 
   @override
   Widget build(BuildContext context) {
@@ -51,15 +55,17 @@ class Cartitem extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: onIncreaseButtonClick,
                       icon: const Icon(CupertinoIcons.plus_rectangle),
                     ),
-                    Text(
-                      data.count.toString(),
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
+                    data.changeCountLoading
+                        ? const CupertinoActivityIndicator()
+                        : Text(
+                            data.count.toString(),
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: onDecreaseButtonClick,
                       icon: const Icon(CupertinoIcons.minus_rectangle),
                     ),
                   ],
@@ -69,7 +75,7 @@ class Cartitem extends StatelessWidget {
                 Text(
                   data.product.previousPrice.withPriceLable,
                   style: const TextStyle(
-                      color: Colors.grey,
+                      color: LightThemeColors.secondaryTextColor,
                       decoration: TextDecoration.lineThrough),
                 ),
                 Text(
