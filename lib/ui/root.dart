@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nike/ui/cart/cart.dart';
+import 'package:nike/ui/cart/widgest/badge.dart';
 import 'package:nike/ui/home/homescreen.dart';
 import 'package:nike/ui/profile/profilescreen.dart';
-
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -54,12 +54,19 @@ class _MainScreenState extends State<MainScreen> {
           ]),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: selectedScreenIndex,
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.home_outlined), label: 'خانه'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_cart_outlined), label: 'سبدخرید'),
-              BottomNavigationBarItem(
+                  icon: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Icon(Icons.shopping_cart_outlined),
+                      Positioned(right: -10, child: Badge(value: 2))
+                    ],
+                  ),
+                  label: 'سبدخرید'),
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline_outlined), label: 'پروفایل'),
             ],
             onTap: (selectedIndex) {
