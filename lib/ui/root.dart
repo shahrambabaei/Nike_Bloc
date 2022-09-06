@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nike/data/repo/cart_repository.dart';
 import 'package:nike/ui/cart/cart.dart';
 import 'package:nike/ui/cart/widgest/badge.dart';
 import 'package:nike/ui/home/homescreen.dart';
@@ -43,6 +44,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   @override
+  void initState() {
+    cartRepository.count();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: _onWillPop,
@@ -61,8 +68,16 @@ class _MainScreenState extends State<MainScreen> {
                   icon: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      Icon(Icons.shopping_cart_outlined),
-                      Positioned(right: -10, child: Badge(value: 2))
+                      const Icon(Icons.shopping_cart_outlined),
+                      Positioned(
+                          right: -10,
+                          child: ValueListenableBuilder<int>(
+                            valueListenable:
+                                CartRepository.cartItemCountNotifier,
+                            builder: (context, value, child) {
+                              return Badge(value: value);
+                            },
+                          ))
                     ],
                   ),
                   label: 'سبدخرید'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nike/data/repo/auth_repository.dart';
-
-
+import 'package:nike/data/repo/cart_repository.dart';
 
 class ProfileSceen extends StatelessWidget {
   const ProfileSceen({Key? key}) : super(key: key);
@@ -20,6 +19,7 @@ class ProfileSceen extends StatelessWidget {
           ElevatedButton(
               onPressed: () {
                 authRepository.signOut();
+                CartRepository.cartItemCountNotifier.value = 0;
               },
               child: const Text('Sign Out'))
         ],
