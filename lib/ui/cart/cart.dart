@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nike/configs/theme.dart';
-import 'package:nike/data/models/cart_response.dart';
 import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/data/repo/cart_repository.dart';
 import 'package:nike/ui/auth/auth.dart';
@@ -26,6 +25,7 @@ class _CartScreenState extends State<CartScreen> {
   late final CartBloc cartBloc;
   final RefreshController _refreshController = RefreshController();
   late StreamSubscription? _streamSubscription;
+  bool stateIsSuccess = false;
   @override
   void initState() {
     AuthRepository.authChangeNotifier.addListener(authChangeNotifierListener);
@@ -48,14 +48,19 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: LightThemeColors.surfaceVariant,
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('سبدخرید'),
-        ),
-        body: BlocProvider<CartBloc>(create: (context) {
+      backgroundColor: LightThemeColors.surfaceVariant,
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('سبدخرید'),
+      ),
+      body: BlocProvider<CartBloc>(
+        create: (context) {
           final bloc = CartBloc(cartRepository);
           _streamSubscription = bloc.stream.listen((state) {
+            setState(() {
+              stateIsSuccess = state is CartSuccess;
+            });
+
             if (_refreshController.isRefresh) {
               if (state is CartSuccess) {
                 _refreshController.refreshCompleted();
@@ -67,7 +72,8 @@ class _CartScreenState extends State<CartScreen> {
           cartBloc = bloc;
           bloc.add(CartStarted(AuthRepository.authChangeNotifier.value));
           return bloc;
-        }, child: BlocBuilder<CartBloc, CartState>(
+        },
+        child: BlocBuilder<CartBloc, CartState>(
           builder: (context, state) {
             if (state is CartLoading) {
               return const Center(
@@ -99,6 +105,7 @@ class _CartScreenState extends State<CartScreen> {
                       isRefreshing: true));
                 },
                 child: ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 80),
                   physics: const BouncingScrollPhysics(),
                   itemCount: state.cartResponse.cartItems.length + 1,
                   itemBuilder: (context, index) {
@@ -111,7 +118,8 @@ class _CartScreenState extends State<CartScreen> {
                         },
                         onDecreaseButtonClick: (() {
                           if (data.count > 1) {
-                            cartBloc.add(CartDecreaseCountButtonCicked(data.id));
+                            cartBloc
+                                .add(CartDecreaseCountButtonCicked(data.id));
                           }
                         }),
                         onIncreaseButtonClick: () {
@@ -157,6 +165,18 @@ class _CartScreenState extends State<CartScreen> {
               throw Exception('Current cart state is not valid');
             }
           },
-        )));
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: stateIsSuccess,
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          margin: const EdgeInsets.symmetric(horizontal: 48),
+          child: FloatingActionButton.extended(
+              onPressed: () {}, label: const Text('پرداخت')),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }

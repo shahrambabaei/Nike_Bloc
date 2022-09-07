@@ -5,7 +5,6 @@ import 'package:nike/configs/exceptions.dart';
 import 'package:nike/data/models/authinfo.dart';
 import 'package:nike/data/models/cart_response.dart';
 import 'package:nike/data/repo/cart_repository.dart';
-import 'package:nike/ui/cart/widgest/cart_item.dart';
 
 part 'cart_event.dart';
 part 'cart_state.dart';
@@ -98,6 +97,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (!isRefreshing) {
         emit(CartLoading());
       }
+    await  Future.delayed(const Duration(seconds: 2));
       final result = await cartRepository.getAll();
       if (result.cartItems.isEmpty) {
         emit(CartEmpty());
