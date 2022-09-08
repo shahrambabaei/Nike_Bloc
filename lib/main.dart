@@ -26,13 +26,19 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           snackBarTheme: SnackBarThemeData(
-            // backgroundColor: LightThemeColors.primaryColor,
             contentTextStyle: defaultTextStyle.apply(color: Colors.white),
           ),
           appBarTheme: const AppBarTheme(
               backgroundColor: Colors.white,
               foregroundColor: LightThemeColors.primaryTextColor,
               elevation: 0),
+          hintColor: LightThemeColors.secondaryTextColor,
+          inputDecorationTheme: InputDecorationTheme(
+              border: const OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: LightThemeColors.primaryTextColor
+                          .withOpacity(.1)))),
           textTheme: TextTheme(
             bodyText2: defaultTextStyle,
             button: defaultTextStyle,

@@ -20,10 +20,8 @@ class CartInfo extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8, 24, 8, 10),
           child: Container(
             alignment: Alignment.centerRight,
-            child:
-                Text('جزئیات خرید', style: Theme.of(context).textTheme.subtitle1
-                    //  TextStyle(color: LightThemeColors.secondaryTextColor),
-                    ),
+            child: Text('جزئیات خرید',
+                style: Theme.of(context).textTheme.subtitle1),
           ),
         ),
         Padding(
@@ -37,7 +35,8 @@ class CartInfo extends StatelessWidget {
                 ]),
             child: Column(children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical:12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -46,13 +45,17 @@ class CartInfo extends StatelessWidget {
                         text: TextSpan(
                             text: totalPrice.saparateByCpmma,
                             style: DefaultTextStyle.of(context).style.copyWith(
-                               fontSize: 15,
+                                fontSize: 15,
                                 color: LightThemeColors.secondaryTextColor),
                             children: <TextSpan>[
+                          const TextSpan(
+                              text:
+                                  ' '), //for space between payableprice and 'تومان'
                           TextSpan(
                             text: 'تومان',
-                            style: DefaultTextStyle.of(context).style.copyWith(
-                                fontSize: 12),
+                            style: DefaultTextStyle.of(context)
+                                .style
+                                .copyWith(fontSize: 12),
                           )
                         ]))
                   ],
@@ -65,7 +68,8 @@ class CartInfo extends StatelessWidget {
               ),
 
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -79,9 +83,10 @@ class CartInfo extends StatelessWidget {
                 height: 1,
                 thickness: .7,
               ),
-             
+
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -92,6 +97,9 @@ class CartInfo extends StatelessWidget {
                             style: DefaultTextStyle.of(context).style.copyWith(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                             children: <TextSpan>[
+                          const TextSpan(
+                              text:
+                                  ' '), //for space between payableprice and 'تومان'
                           TextSpan(
                             text: 'تومان',
                             style: DefaultTextStyle.of(context).style.copyWith(
@@ -110,42 +118,3 @@ class CartInfo extends StatelessWidget {
     );
   }
 }
-
-//BuildCartInfo
-// class BuildCartInfo extends StatelessWidget {
-//   const BuildCartInfo({
-//     Key? key,
-//     required this.title,
-//     required this.price,
-//   }) : super(key: key);
-
-//   final String title;
-//   final int price;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(8.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(title),
-//           RichText(
-//               text: TextSpan(
-//                   text: price.saparateByCpmma,
-//                   style: DefaultTextStyle.of(context)
-//                       .style
-//                       .copyWith(fontSize: 18, fontWeight: FontWeight.bold),
-//                   children: <TextSpan>[
-//                 TextSpan(
-//                   text: 'تومان',
-//                   style: DefaultTextStyle.of(context)
-//                       .style
-//                       .copyWith(fontSize: 10, fontWeight: FontWeight.normal),
-//                 )
-//               ]))
-//         ],
-//       ),
-//     );
-//   }
-// }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nike/data/repo/cart_repository.dart';
-import 'package:nike/ui/cart/cart.dart';
+import 'package:nike/ui/cart/cartscreen.dart';
 import 'package:nike/ui/cart/widgest/badge.dart';
 import 'package:nike/ui/home/homescreen.dart';
 import 'package:nike/ui/profile/profilescreen.dart';

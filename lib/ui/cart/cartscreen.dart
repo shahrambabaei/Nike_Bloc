@@ -11,6 +11,7 @@ import 'package:nike/ui/auth/auth.dart';
 import 'package:nike/ui/cart/bloc/cart_bloc.dart';
 import 'package:nike/ui/cart/widgest/cart_info.dart';
 import 'package:nike/ui/cart/widgest/cart_item.dart';
+import 'package:nike/ui/shipping/shippingscreen.dart';
 import 'package:nike/widgets/empty_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -173,7 +174,17 @@ class _CartScreenState extends State<CartScreen> {
           width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.symmetric(horizontal: 48),
           child: FloatingActionButton.extended(
-              onPressed: () {}, label: const Text('پرداخت')),
+              onPressed: () {
+                final state = cartBloc.state;
+                if (state is CartSuccess) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ShippingScreen(
+                          totalPrice: state.cartResponse.totalPrice,
+                          payablePrice: state.cartResponse.payablePrice,
+                          shippingPrice: state.cartResponse.shippingPrice)));
+                }
+              },
+              label: const Text('پرداخت')),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
