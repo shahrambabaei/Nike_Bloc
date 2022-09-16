@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/data/models/order.dart';
 import 'package:nike/data/repo/order_repository.dart';
 import 'package:nike/ui/cart/widgest/cart_info.dart';
-import 'package:nike/ui/receipt/receiptscreen.dart';
+import 'package:nike/ui/receipt/payment_receiptscreen.dart';
 import 'package:nike/ui/shipping/bloc/shipping_bloc.dart';
 
 class ShippingScreen extends StatefulWidget {
@@ -63,7 +63,8 @@ class _ShippingScreenState extends State<ShippingScreen> {
                     SnackBar(content: Text(event.appException.messege)));
               } else if (event is ShippingSuccess) {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PaymentReceiptScreen(),
+                  builder: (context) =>
+                      PaymentReceiptScreen(orderId: event.result.orderId),
                 ));
               }
             });
