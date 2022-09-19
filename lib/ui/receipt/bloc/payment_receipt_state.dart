@@ -7,7 +7,7 @@ abstract class PaymentReceiptState extends Equatable {
   List<Object> get props => [];
 }
 
-class PaymentReceiptInitial extends PaymentReceiptState {}
+
 
 class PaymentReceiptLoading extends PaymentReceiptState {}
 

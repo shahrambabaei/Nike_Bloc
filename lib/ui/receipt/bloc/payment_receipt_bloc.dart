@@ -10,7 +10,7 @@ part 'payment_receipt_state.dart';
 class PaymentReceiptBloc
     extends Bloc<PaymentReceiptEvent, PaymentReceiptState> {
   final IOrderRepository repository;
-  PaymentReceiptBloc(this.repository) : super(PaymentReceiptInitial()) {
+  PaymentReceiptBloc(this.repository) : super(PaymentReceiptLoading()) {
     on<PaymentReceiptEvent>((event, emit) async {
       if (event is PaymentReceiptStarted) {
         try {

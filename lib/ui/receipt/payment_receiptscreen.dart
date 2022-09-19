@@ -15,6 +15,7 @@ class PaymentReceiptScreen extends StatelessWidget {
     final themeData = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('رسیدپرداخت'),
         ),
         body: BlocProvider<PaymentReceiptBloc>(
