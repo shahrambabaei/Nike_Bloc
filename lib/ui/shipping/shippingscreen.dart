@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nike/data/models/order.dart';
 import 'package:nike/data/repo/order_repository.dart';
 import 'package:nike/ui/cart/widgest/cart_info.dart';
+import 'package:nike/ui/payment_webview.dart';
 import 'package:nike/ui/receipt/payment_receiptscreen.dart';
 import 'package:nike/ui/shipping/bloc/shipping_bloc.dart';
 
@@ -62,10 +63,19 @@ class _ShippingScreenState extends State<ShippingScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(event.appException.messege)));
               } else if (event is ShippingSuccess) {
+                if(event.result.bankGatewayUrl.isNotEmpty){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentGatewayScreen(
+                            bankGatewayUrl: event.result.bankGatewayUrl),
+                      ));
+                } else {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) =>
-                      PaymentReceiptScreen(orderId: event.result.orderId),
-                ));
+                    builder: (context) =>
+                        PaymentReceiptScreen(orderId: event.result.orderId),
+                  ));
+                }
               }
             });
             return bloc;
@@ -131,7 +141,18 @@ class _ShippingScreenState extends State<ShippingScreen> {
                                     child: const Text('پرداخت در محل')),
                                 const SizedBox(width: 16),
                                 ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      BlocProvider.of<ShippingBloc>(context)
+                                          .add(ShippingCreateOrder(
+                                              CreateOrderParams(
+                                                  firstNameController.text,
+                                                  lastNameController.text,
+                                                  postalCodeController.text,
+                                                  mobileController.text,
+                                                  addressController.text,
+                                                  PaymentMethod
+                                                      .online)));
+                                    },
                                     child: const Text('پرداخت اینترنتی'))
                               ],
                             );
