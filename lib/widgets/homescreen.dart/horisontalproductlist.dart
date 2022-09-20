@@ -26,7 +26,7 @@ class HorisontalProductList extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.subtitle1,
             ),
-            TextButton(onPressed: () {}, child: const Text('مشاهده همه'))
+            TextButton(onPressed: onClick, child: const Text('مشاهده همه'))
           ],
         ),
       ),
