@@ -7,7 +7,6 @@ import 'package:nike/data/repo/product_repository.dart';
 import 'package:nike/ui/list/bloc/product_list_bloc.dart';
 import 'package:nike/widgets/productitem.dart';
 
-
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key, required this.sort});
   final int sort;
@@ -16,35 +15,39 @@ class ProductListScreen extends StatefulWidget {
   State<ProductListScreen> createState() => _ProductListScreenState();
 }
 
+enum ViewType { grid, list }
+
 class _ProductListScreenState extends State<ProductListScreen> {
   ProductListBloc? bloc;
+  ViewType viewType = ViewType.grid;
   @override
   void dispose() {
     bloc?.close();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('کفشهای ورزشی'),
-      ),
-      body: BlocProvider<ProductListBloc>(create: (context) {
-         bloc= ProductListBloc(productRepository)
+        appBar: AppBar(
+          title: const Text('کفشهای ورزشی'),
+        ),
+        body: BlocProvider<ProductListBloc>(
+          create: (context) {
+            bloc = ProductListBloc(productRepository)
               ..add(ProductListStarted(widget.sort));
-              return bloc!;
+            return bloc!;
           },
           child: BlocBuilder<ProductListBloc, ProductListState>(
             builder: (context, state) {
               if (state is ProductListsuccess) {
-        final products=state.products;
+                final products = state.products;
                 return Column(
-          children: [
+                  children: [
                     Container(
                       height: 65,
-                     
-                      decoration:
-                          BoxDecoration(color: LightThemeColors.surfacedColor,
+                      decoration: BoxDecoration(
+                          color: LightThemeColors.surfacedColor,
                           border: Border(
                               top: BorderSide(
                                   width: 1,
@@ -54,8 +57,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 color: Colors.black.withOpacity(.1),
                                 blurRadius: 20),
                           ]),
-                      child: Row(   
-                        children: [
+                      child: Row(children: [
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -65,7 +67,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.vertical(
                                           top: Radius.circular(30))),
-                                  context: context, builder: (context) {
+                                  context: context,
+                                  builder: (context) {
                                     return SizedBox(
                                       height: 250,
                                       child: Padding(
@@ -73,58 +76,62 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               vertical: 20),
                                           child: Column(
                                             children: [
-                                              Text('انتخاب مرتب سازی',style:
-                                              Theme.of(context)
+                                              Text('انتخاب مرتب سازی',
+                                                  style: Theme.of(context)
                                                       .textTheme
                                                       .headline6),
                                               Expanded(
-                                                        child: ListView.builder(
+                                                child: ListView.builder(
                                                   itemCount:
                                                       state.sortNames.length,
-                                                          itemBuilder: (context, index) {
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     final selectedSortIndex =
                                                         state.sort;
-                                                          return InkWell(
+                                                    return InkWell(
                                                       onTap: () {
                                                         bloc!.add(
-                                                            ProductListStarted(
+                                                          ProductListStarted(
                                                               index),
                                                         );
                                                         Navigator.pop(context);
                                                       },
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.symmetric(
+                                                            const EdgeInsets
+                                                                    .symmetric(
                                                                 horizontal: 16,
                                                                 vertical: 8),
-                                                                            child: SizedBox(
+                                                        child: SizedBox(
                                                           height: 30,
-                                                                        child: Row(
+                                                          child: Row(
                                                             children: [
-                                                              Text(
-                                                                  state.sortNames[index]),
-                                                                const  SizedBox(width: 10,),
-                                                                  if(index==selectedSortIndex)
+                                                              Text(state
+                                                                      .sortNames[
+                                                                  index]),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              if (index ==
+                                                                  selectedSortIndex)
                                                                 const Icon(
                                                                   CupertinoIcons
                                                                       .check_mark_circled_solid,
                                                                   color: LightThemeColors
                                                                       .primaryColor,
                                                                 )
-                                                          
-                                                                  
                                                             ],
-                                                                                                                  ),
-                                                                                                                ),
-                                                                                                              ),
-                                                          );
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
                                                   },
                                                 ),
                                               )
                                             ],
                                           )),
                                     );
-                                },
+                                  },
                                 );
                               },
                               child: Row(
@@ -132,55 +139,67 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 children: [
                                   IconButton(
                                     onPressed: () {},
-                                    icon: const Icon(
-                                     CupertinoIcons.sort_down),
-                                      ),
+                                    icon: const Icon(CupertinoIcons.sort_down),
+                                  ),
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         const Text('مرتب سازی'),
-                                        Text(ProductSort.names[state.sort],
-                                          style: Theme.of(context).textTheme.caption,
+                                        Text(
+                                          ProductSort.names[state.sort],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption,
                                         )
                                       ])
-                                                          ],
-                                                        ),
+                                ],
+                              ),
                             ),
                           ),
-                            ),
+                        ),
                         Container(
                           width: 1,
                           color: Theme.of(context).dividerColor,
                         ),
-                            Padding(
+                        Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 6),
-                              child: IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(CupertinoIcons.square_grid_2x2)),
-                            )
+                          child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  viewType = viewType == ViewType.grid
+                                      ? ViewType.list
+                                      : ViewType.grid;
+                                });
+                              },
+                              icon: const Icon(CupertinoIcons.square_grid_2x2)),
+                        )
                       ]),
                     ),
                     Expanded(
-              child: GridView.builder(gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio: .65,
-                
-                crossAxisCount: 2),
-              itemCount: products.length,
-               itemBuilder:(context, index) {
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: .65,
+                            crossAxisCount: viewType == ViewType.grid ? 2 : 1),
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
                           return ProductItem(
                               product: products[index],
                               borderRadius: BorderRadius.zero);
-               }, ),
-            ),
-          ],
-        ) ; 
-      
-        } else {
-          return const Center(child: CupertinoActivityIndicator(),);
-        }
-      },),)
-    );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CupertinoActivityIndicator(),
+                );
+              }
+            },
+          ),
+        ));
   }
 }
