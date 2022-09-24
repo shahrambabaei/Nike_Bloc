@@ -23,8 +23,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Shabnam', color: LightThemeColors.primaryTextColor);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+    
         theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
           snackBarTheme: SnackBarThemeData(
             contentTextStyle: defaultTextStyle.apply(color: Colors.white),
           ),
