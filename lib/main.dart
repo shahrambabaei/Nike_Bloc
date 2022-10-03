@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:nike/configs/theme.dart';
+import 'package:nike/data/models/favorite_manager.dart';
+
 import 'package:nike/data/repo/auth_repository.dart';
 import 'package:nike/data/repo/banner_repository.dart';
 import 'package:nike/data/repo/product_repository.dart';
@@ -8,7 +11,8 @@ import 'package:nike/data/repo/product_repository.dart';
 import 'package:nike/ui/home/bloc/home_bloc.dart';
 import 'package:nike/ui/root.dart';
 
-void main() {
+void main() async {
+  await FavoriteManager.init();
   WidgetsFlutterBinding.ensureInitialized();
   authRepository.loadAuthInfo();
   runApp(const MyApp());
@@ -23,7 +27,6 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Shabnam', color: LightThemeColors.primaryTextColor);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-    
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           snackBarTheme: SnackBarThemeData(
@@ -38,8 +41,8 @@ class MyApp extends StatelessWidget {
               border: const OutlineInputBorder(),
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                      color: LightThemeColors.primaryTextColor
-                          .withOpacity(.1)))),
+                      color:
+                          LightThemeColors.primaryTextColor.withOpacity(.1)))),
           textTheme: TextTheme(
             bodyText2: defaultTextStyle,
             button: defaultTextStyle,
